@@ -1,0 +1,136 @@
+* {  box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-size:14px;
+    width:100%;
+    flex-wrap: wrap;
+    margin:0;
+  }
+  
+  /* Header. Used for View HighScore and View Timer */
+  header {
+    display:flex;
+    align-items: center;
+    justify-content:flex-start;
+    height: 2em;
+    width:100%;
+    margin-bottom:5em;
+  }
+
+#viewscore {
+    position:relative;
+    padding-left:2em;
+    justify-content: flex-start;
+    width:50%;
+    color:blue;
+  }
+
+#viewtimer {
+    display:flex;
+    width:50%;
+    justify-content: flex-end;
+    padding-right: 2em;
+  }
+
+  /* Main. Used to contain intro to quiz and all quiz questions, high-scores, etc. */
+
+main {
+    display:flex;
+    width:100%;
+    justify-content: center;
+    align-items:flex-start;
+}
+
+main section{
+    width:50em;
+    justify-content:flex-start;
+    margin-left:40%;
+}
+
+h1 {
+    font-size:250%;
+    text-align:center;
+    margin-bottom:1em;
+}
+
+h2 {
+    font-size:200%;
+    text-align:center;
+}
+
+.center-text {
+    text-align:center;
+}
+
+/* Show and hide classes */
+
+.shown {
+    display:inline-block;
+}
+
+.hidden {
+    display:none;
+}
+
+/* Row and column */
+
+.row {
+    flex-direction: row;
+}
+
+.column {
+    flex-direction:column;
+}
+
+input{
+    margin-right:1em;
+}
+
+button {
+
+    cursor: pointer;
+    background-color: #7e1078;
+    color: white;
+    margin-right:2em;
+    font-size: 1em;
+    padding: 1px 6px;
+    border-width:1px;
+    border: outset;
+    border-radius:6px;
+    border-color:black;
+}
+
+ol.high-scores {
+    background-color: rgba(243, 196, 239, 0.726);
+    padding: 3px;
+}
+
+ol.high-scores li {
+    border: 0;
+    border-width: 1px;
+    border-style:solid;
+    border-color:#4a40dd;
+    background-color: rgba(243, 196, 239, 0.726);
+    padding: 3px;
+}
+
+#initials {
+    width: 25%;
+    padding: 12px 20px;
+    margin: 8px 20px;
+    box-sizing: border-box;
+    font-size: 18px;
+}
+
+.right-wrong {
+    width:50em;
+    justify-content:flex-start;
+    margin-left:40%;
+    border:0px;
+    border-top: 1px;
+    border-style:solid;
+    border-color: #c4bebe ;
+}

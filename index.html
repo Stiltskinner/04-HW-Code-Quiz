@@ -1,0 +1,92 @@
+<!-- It will need to open with header text 'Coding Quiz Challenge' and p text describing the challenge, a start button, visible timer in the top-right, and view highscores in the top left -->
+
+<!-- It will need an event listener to look for a click on the start button element. That event listener will need to hide all of the starter text and start button and then display -question text and -4 buttons with answer choices in a list -->
+
+<!-- When any answer choice is clicked it will need to replace the question text and replace all of the text for answer choices. When an incorrect choice is clicked, it will need to subtract 10 seconds from the timer. If the correct answer is chosen, the following question should display the text "correct" below the answer choices, otherwise it should display "wrong"-->
+
+<!-- When the last question is answered OR the timer gets to 0, it will need to hide all question text and answer choices. It will need to display 'Quiz Complete'. It will need to display the score inside of the text "Your final score is ". It will need to prompt the user to complete a form with their initials. It will need a button to submit the form -->
+
+<!-- When the user submits the form, it will need to add the initials and the high score into a new  variable. This new variable should get added into a separate variable that contains all high scores. The all high scores variable will need to be stringified and saved to local storage, and the application should pull allhighscores from local storage to display to a list of high scores. -->
+
+<!-- There needs to be a clear high scores button that clears the local storage. There needs to be a play again button that returns to the quiz start page -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Quiz</title>
+    <link rel="stylesheet" href="./assets/css/reset.css" />
+    <link rel="normalize" type="text/css" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="./Assets/CSS/style.css" />
+</head>
+
+<body>
+    <header>
+        <p id="viewscore">
+            View High Scores
+        </p>
+        <p id="viewtimer">
+            Placeholder Timer
+        </p>
+    </header>
+
+    <main class="column">
+        <section id="Quiz-Area">
+
+            <!-- the following div contains the text that should display when the user arrives on the page or wants to try the quiz again -->
+            <div id="quiz-intro" data-state="shown">
+                <h1 id="quiz-name">
+                    Coding Quiz Challenge
+                </h1>
+                <p class="center-text">Welcome to the Coding Quiz Challenge. Try to answer all questions as quickly as
+                    possible. 10 seconds will be deducted from the timer when you answer incorrectly. Your high score
+                    will be the time you have left when finished. Click 'Start Quiz' to start the quiz.</p>
+                    <br>
+                <button>Start Quiz</button>
+            </div>
+            <!-- The following div contains questions and answer choices -->
+            <div data-state="hidden">
+                <h2>
+                    How much wood could a woodchuck chuck if a woodchuck could chuck wood?
+                </h2>
+                <br><br>
+                <ul class="quiz-answers">
+                    <li>Answer 1</li>
+                    <li>Answer 2</li>
+                    <li>Answer 3</li>
+                    <li>Answer 4</li>
+                </ul>
+            </div>
+            <!-- The following div contains the page the user sees when the quiz is over. -->
+            <div data-state="hidden">
+                <h2>
+                    All done!
+                </h2>
+                <br><br>
+                <p id="display-score">Your final score is ##</p>
+                <br><br>
+                <p>Enter initials: <input id="intials"></input></form><button>Submit</button></p>
+            </div>
+            <!-- The following div displays a list of current high scores and has buttons to Play Again or Clear High scores -->
+            <div data-state="hidden">
+                <h2>High Scores</h2>
+                <br><br>
+                <ol class="high-scores">
+                    <li class="high-scores">Placeholder 50</li>
+                    <li class="high-scores">Placeholder 40</li>
+                </ol>
+                <br>
+                <span><button>Play Again</button><button>Clear High Scores</button></span>
+            </div>
+        </section>
+        <br><br>
+        <!-- The following div displays Correct! or Wrong! based on the answer selected on the previous question. If the previous page was not a quiz question, it should be hidden -->
+        <div class="right-wrong" data-state="hidden">
+            <p>Placeholder Right/Wrong</p>
+        </div>
+    </main>
+    <script src="./assets/js/script.js"></script>
+</body>
+
+</html>

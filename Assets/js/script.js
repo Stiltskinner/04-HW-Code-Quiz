@@ -1,0 +1,57 @@
+// -- It will need to open with header text 'Coding Quiz Challenge' and p text describing the challenge, a start button, visible timer in the top-right, and view highscores in the top left -->
+
+// <!-- It will need an event listener to look for a click on the start button element. That event listener will need to hide all of the starter text and start button and then display -question text and -4 buttons with answer choices in a list -->
+
+// <!-- When any answer choice is clicked it will need to replace the question text and replace all of the text for answer choices. When an incorrect choice is clicked, it will need to subtract 10 seconds from the timer. If the correct answer is chosen, the following question should display the text "correct" below the answer choices, otherwise it should display "wrong"-->
+
+// <!-- When the last question is answered OR the timer gets to 0, it will need to hide all question text and answer choices. It will need to display 'Quiz Complete'. It will need to display the score inside of the text "Your final score is ". It will need to prompt the user to complete a form with their initials. It will need a button to submit the form -->
+
+// <!-- When the user submits the form, it will need to add the initials and the high score into a new  variable. This new variable should get added into a separate variable that contains all high scores. The all high scores variable will need to be stringified and saved to local storage, and the application should pull allhighscores from local storage to display to a list of high scores. -->
+
+// <!-- There needs to be a clear high scores button that clears the local storage. There needs to be a play again button that returns to the quiz start page
+
+// Variables
+var timeRemaining = 75;
+var container = document.querySelector("div");
+var button = document.querySelector("button");
+
+// Data States
+// container.addEventListener("click", function(event) {
+//     var element = event.target;
+
+//     if (element.matches("div")) {
+//         var state = element.getAttribute("data-state");
+        
+
+//         if (state === "hidden") {
+//             var status = element.dataset.state;
+//             element.classList.replace("hidden","shown");
+//             status = "shown";
+//         }
+//         else {
+//             var status = element.dataset.state;
+//             element.classList.replace("shown","hidden");
+//             status = "hidden";
+//         }
+//     }
+// });
+
+container.addEventListener("click", function(event) {
+    var element = event.target;
+
+    if (element.matches("button")) {
+        var state = this.parentNode.getAttribute("data-state");
+        
+
+        if (state === "hidden") {
+            var status = this.parentNode.dataset.state;
+            this.parentNode.setAttribute("class","shown");
+            status = "shown";
+        }
+        else {
+            var status = element.dataset.state;
+            this.parentNode.setAttribute("class","hidden");
+            status = "hidden";
+        }
+    }
+});
