@@ -47,7 +47,7 @@ main {
 main section{
     width:50em;
     justify-content:flex-start;
-    margin-left:40%;
+    margin-left:33%;
 }
 
 h1 {
@@ -125,7 +125,7 @@ ol.high-scores li {
     font-size: 18px;
 }
 
-.right-wrong {
+#right-wrong {
     width:50em;
     justify-content:flex-start;
     margin-left:40%;

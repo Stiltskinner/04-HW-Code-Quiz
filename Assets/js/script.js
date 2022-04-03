@@ -12,46 +12,44 @@
 
 // Variables
 var timeRemaining = 75;
-var container = document.querySelector("div");
-var button = document.querySelector("button");
+var quizIntro = document.getElementById("quiz-intro");
+var quizQuestion = document.getElementById("quiz-question");
+var questionText = document.getElementById("question-text");
+var questions = ["I'm question 1", "I'm question 2"];
+var questionOneAnswers = ["I'm the correct answer", "I'm the wrong answer", "I'm the wrong answer2", "I'm the wrong answer3"];
+var correctAnswers = ["I'm the correct answer", "I'm the correct answer",];
 
-// Data States
-// container.addEventListener("click", function(event) {
-//     var element = event.target;
+var li1 = document.getElementById("answer1");
+var li2 = document.getElementById("answer2");
+var li3 = document.getElementById("answer3");
+var li4 = document.getElementById("answer4");
 
-//     if (element.matches("div")) {
-//         var state = element.getAttribute("data-state");
-        
+// This looks for a click inside the quiz-intro div. If it was a button, it hides that div. It then calls the function that populates the quiz with a question and answers.
 
-//         if (state === "hidden") {
-//             var status = element.dataset.state;
-//             element.classList.replace("hidden","shown");
-//             status = "shown";
-//         }
-//         else {
-//             var status = element.dataset.state;
-//             element.classList.replace("shown","hidden");
-//             status = "hidden";
-//         }
-//     }
-// });
-
-container.addEventListener("click", function(event) {
+quizIntro.addEventListener("click", function(event) {
     var element = event.target;
 
     if (element.matches("button")) {
-        var state = this.parentNode.getAttribute("data-state");
-        
+        var introState = quizIntro.getAttribute("data-state");
 
-        if (state === "hidden") {
-            var status = this.parentNode.dataset.state;
-            this.parentNode.setAttribute("class","shown");
-            status = "shown";
-        }
-        else {
-            var status = element.dataset.state;
-            this.parentNode.setAttribute("class","hidden");
-            status = "hidden";
+        if (introState === "shown") {
+            // This hides the intro text and start quiz buttons and sets the data state for this div to hidden
+            var introStatus = quizIntro.dataset.state;
+            quizIntro.setAttribute("class","hidden");
+            introStatus = "hidden";
+            // This shows the quiz question div and sets its data set to shown
+            quizQuestion.dataset.state = "shown";
+            quizQuestion.setAttribute("class", "shown");
+            populateQuiz();
         }
     }
 });
+
+// This function should pull question text from the first object in the array. It should also pull answer choices from questionOneAnswers and populate each list item in a random order without repeating any choices.
+function populateQuiz() {
+    questionText.textContent = questions[0];
+    for (var i = 0; i < questionOneAnswers.length; i++) {
+        var index = Math.floor(Math.random() * questionOneAnswers.length);
+        li1.textContent = questionOneAnswers[index];
+    }
+}
