@@ -101,6 +101,7 @@ button {
     border: outset;
     border-radius:6px;
     border-color:black;
+    margin-bottom: 1em;
 }
 
 ol.high-scores {

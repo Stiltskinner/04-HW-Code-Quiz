@@ -12,18 +12,24 @@
 
 // Variables
 var timeRemaining = 75;
+var timeDisplay = document.getElementById("viewtimer");
 var quizIntro = document.getElementById("quiz-intro");
 var quizQuestion = document.getElementById("quiz-question");
 var questionText = document.getElementById("question-text");
+var quizAnswers = document.getElementById("quiz-answers");
 var questions = ["I'm question 1", "I'm question 2"];
-var questionOneAnswers = ["I'm the correct answer", "I'm the wrong answer", "I'm the wrong answer2", "I'm the wrong answer3"];
-var correctAnswers = ["I'm the correct answer", "I'm the correct answer",];
+var q1Answers = ["I'm the correct answer", "I'm the wrong answer1", "I'm the wrong answer2", "I'm the wrong answer3"];
+var q2Answers = ["I'm really the correct answer", "I'm really the wrong answer1", "I'm really the wrong answer2", "I'm really the wrong answer3"];
+var q1CorrectAnswer = "I'm the correct answer";
+var q2CorrectAnswer = "I'm really the correct answer";
+var allCorrectAnswer = [...q1CorrectAnswer,...q2CorrectAnswer];
+var allAnswers = new Array ( );
+allAnswers[0] = new Array ("I'm the correct answer", "I'm the wrong answer1", "I'm the wrong answer2", "I'm the wrong answer3");
+allAnswers[1] = new Array ("I'm really the correct answer", "I'm really the wrong answer1", "I'm really the wrong answer2", "I'm really the wrong answer3");
+var questionNumber = 0;
 
-var li1 = document.getElementById("answer1");
-var li2 = document.getElementById("answer2");
-var li3 = document.getElementById("answer3");
-var li4 = document.getElementById("answer4");
 
+timeDisplay.textContent = "Time Remaining: " + timeRemaining;
 // This looks for a click inside the quiz-intro div. If it was a button, it hides that div. It then calls the function that populates the quiz with a question and answers.
 
 quizIntro.addEventListener("click", function(event) {
@@ -47,9 +53,63 @@ quizIntro.addEventListener("click", function(event) {
 
 // This function should pull question text from the first object in the array. It should also pull answer choices from questionOneAnswers and populate each list item in a random order without repeating any choices.
 function populateQuiz() {
-    questionText.textContent = questions[0];
-    for (var i = 0; i < questionOneAnswers.length; i++) {
-        var index = Math.floor(Math.random() * questionOneAnswers.length);
-        li1.textContent = questionOneAnswers[index];
+    questionText.textContent = questions[questionNumber];
+    shuffle(allAnswers[questionNumber]);
+    quizAnswers.innerHTML = "";
+    for (var i = 0; i < allAnswers[questionNumber].length; i++) {
+        var randAnswer = allAnswers[questionNumber][i];
+        var li = document.createElement("li");
+        var button = document.createElement("button");
+        button.textContent = randAnswer;
+        li.appendChild(button);
+        quizAnswers.appendChild(li);
     }
+}
+
+quizQuestion.addEventListener("click", function(event) {
+    var element = event.target;
+    var answertext = element.textContent;
+    if (element.matches("button")) {
+        if (answertext === q1CorrectAnswer) {
+            continueQuiz();
+        }
+        else {
+            timeRemaining = timeRemaining-10;
+            timeDisplay.textContent = "Time Remaining: " + timeRemaining;
+            continueQuiz();
+        }
+    }
+});
+
+// This function should clear the question text and insert text for the next question. It should shuffle the answers for question 2, clear the current answer choices, and then create new list items and buttons for the new answer choice.
+function continueQuiz() {
+    questionText.textContent = "";
+    questionText.textContent = questions[questionNumber];
+    shuffle(allAnswers[questionNumber]);
+    quizAnswers.innerHTML = "";
+    for (var i = 0; i < allAnswers[questionNumber].length; i++) {
+        var randAnswer = q2Answers[i];
+        var li = document.createElement("li");
+        var button = document.createElement("button");
+        button.textContent = randAnswer;
+        li.appendChild(button);
+        quizAnswers.appendChild(li);
+    }
+    questionNumber++;
+}
+
+// The following shuffle function was borrowed from the Fisher-Yates Shuffle, found on stackerflow at the following url: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+
+function shuffle(answers) {
+    let currentIndex = answers.length, randomIndex;
+
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        [answers[currentIndex], answers[randomIndex]] = [
+            answers[randomIndex], answers[currentIndex]];
+        
+    }
+    return answers;
 }
