@@ -33,12 +33,13 @@ allAnswers[4] = new Array ("I'm really the correct answer", "I'm really the wron
 // questionNumber tracks which question the user is on. 
 var questionNumber = 0;
 var timeRemaining = 75;
+var finalScore = 0;
 
 
 timeDisplay.textContent = "Time Remaining: " + timeRemaining;
 // This looks for a click inside the quiz-intro div. If it was a button, it hides that div. It then calls the function that populates the quiz with a question and answers.
 
-quizIntro.addEventListener("click", function(event) {
+function startQuiz(event) {
     var element = event.target;
 
     if (element.matches("button")) {
@@ -53,9 +54,10 @@ quizIntro.addEventListener("click", function(event) {
             quizQuestion.dataset.state = "shown";
             quizQuestion.setAttribute("class", "shown");
             populateQuiz();
+            countDown();
         }
     }
-});
+};
 
 // This function should pull question text from the first object in the array. It should also pull answer choices from questionOneAnswers and populate each list item in a random order without repeating any choices.
 function populateQuiz() {
@@ -72,7 +74,30 @@ function populateQuiz() {
     }
 }
 
-quizQuestion.addEventListener("click", function(event) {
+function countDown() {
+    var timeInterval = setInterval(function () {
+        if (timeRemaining > 1) {
+            timeDisplay.textContent = "Time Remaining: " + timeRemaining; + " seconds";
+            timeRemaining--;
+        }
+        else if (timeRemaining === 1) {
+            timeDisplay.textContent = "Time Remaining: " + timeRemaining; + " second";
+        }
+        else {
+            storeTime()
+            timeDisplay.textContent = "";
+            clearInterval(timeInterval);
+        }
+    } , 1000);
+}
+
+// stores the timeRemaining at end of quiz and then resets it to a starting time of 75 seconds
+function storeTime() {
+    finalScore=timeRemaining;
+    timeRemaining=75;
+}
+
+function answerChosen(event) {
     var element = event.target;
     var answertext = element.textContent;
     if (element.matches("button")) {
@@ -85,20 +110,22 @@ quizQuestion.addEventListener("click", function(event) {
             continueQuiz();
         }
     }
-});
+};
 
 // This function should clear the question text and insert text for the next question. It should shuffle the answers for question 2, clear the current answer choices, and then create new list items and buttons for the new answer choice.
 function continueQuiz() {
     questionNumber++;
+    // This checks for the user answering the last question in the quiz, hides the quiz if it was the last question, and shows the enter high score div
     if (questionNumber >= questions.length) {
             var enterScoreStatus = enterScore.dataset.state;
             enterScore.setAttribute("class","shown");
             enterScoreStatus = "shown";
-            // This shows the quiz question div and sets its data set to shown
             quizQuestion.dataset.state = "hidden";
             quizQuestion.setAttribute("class", "hidden");
             quizAnswers.innerHTML = "";
+            storeTime();
         }
+        // This generates the next question and set of answer choices
     else {
         questionText.textContent = "";
         questionText.textContent = questions[questionNumber];
@@ -130,3 +157,10 @@ function shuffle(answers) {
     }
     return answers;
 }
+
+// Event listeners
+
+quizIntro.addEventListener("click", startQuiz);
+quizQuestion.addEventListener("click", answerChosen);
+
+// reminder how to use localStorage    localStorage.setItem("finalScore", timeRemaining);
