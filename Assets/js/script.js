@@ -11,22 +11,28 @@
 // <!-- There needs to be a clear high scores button that clears the local storage. There needs to be a play again button that returns to the quiz start page
 
 // Variables
-var timeRemaining = 75;
+// Variables for sections of the document that need to be modified by JS
 var timeDisplay = document.getElementById("viewtimer");
 var quizIntro = document.getElementById("quiz-intro");
 var quizQuestion = document.getElementById("quiz-question");
 var questionText = document.getElementById("question-text");
 var quizAnswers = document.getElementById("quiz-answers");
-var questions = ["I'm question 1", "I'm question 2"];
-var q1Answers = ["I'm the correct answer", "I'm the wrong answer1", "I'm the wrong answer2", "I'm the wrong answer3"];
-var q2Answers = ["I'm really the correct answer", "I'm really the wrong answer1", "I'm really the wrong answer2", "I'm really the wrong answer3"];
-var q1CorrectAnswer = "I'm the correct answer";
-var q2CorrectAnswer = "I'm really the correct answer";
-var allCorrectAnswer = [...q1CorrectAnswer,...q2CorrectAnswer];
+var enterScore = document.getElementById("enter-score");
+var scoreDisplay = document.getElementById("score-display");
+// questions contains the text of the question asked of the user in order of question number
+var questions = ["I'm question 1", "I'm question 2", "I'm question 3", "I'm question 4", "I'm question 5"];
+// allCorrectAnswer contains the correct answers in order of question number
+var allCorrectAnswer = ["I'm the correct answer","I'm really the correct answer", "I'm really the correct answer", "I'm really the correct answer", "I'm really the correct answer"];
+// allAnswers is an array of arrays, and each nested array contains the answer choices for one question. They are in order of question number.
 var allAnswers = new Array ( );
 allAnswers[0] = new Array ("I'm the correct answer", "I'm the wrong answer1", "I'm the wrong answer2", "I'm the wrong answer3");
 allAnswers[1] = new Array ("I'm really the correct answer", "I'm really the wrong answer1", "I'm really the wrong answer2", "I'm really the wrong answer3");
+allAnswers[2] = new Array ("I'm really the correct answer", "I'm really the wrong answer1", "I'm really the wrong answer2", "I'm really the wrong answer3");
+allAnswers[3] = new Array ("I'm really the correct answer", "I'm really the wrong answer1", "I'm really the wrong answer2", "I'm really the wrong answer3");
+allAnswers[4] = new Array ("I'm really the correct answer", "I'm really the wrong answer1", "I'm really the wrong answer2", "I'm really the wrong answer3");
+// questionNumber tracks which question the user is on. 
 var questionNumber = 0;
+var timeRemaining = 75;
 
 
 timeDisplay.textContent = "Time Remaining: " + timeRemaining;
@@ -70,7 +76,7 @@ quizQuestion.addEventListener("click", function(event) {
     var element = event.target;
     var answertext = element.textContent;
     if (element.matches("button")) {
-        if (answertext === q1CorrectAnswer) {
+        if (answertext === allCorrectAnswer[questionNumber]) {
             continueQuiz();
         }
         else {
@@ -83,19 +89,30 @@ quizQuestion.addEventListener("click", function(event) {
 
 // This function should clear the question text and insert text for the next question. It should shuffle the answers for question 2, clear the current answer choices, and then create new list items and buttons for the new answer choice.
 function continueQuiz() {
-    questionText.textContent = "";
-    questionText.textContent = questions[questionNumber];
-    shuffle(allAnswers[questionNumber]);
-    quizAnswers.innerHTML = "";
-    for (var i = 0; i < allAnswers[questionNumber].length; i++) {
-        var randAnswer = q2Answers[i];
-        var li = document.createElement("li");
-        var button = document.createElement("button");
-        button.textContent = randAnswer;
-        li.appendChild(button);
-        quizAnswers.appendChild(li);
-    }
     questionNumber++;
+    if (questionNumber >= questions.length) {
+            var enterScoreStatus = enterScore.dataset.state;
+            enterScore.setAttribute("class","shown");
+            enterScoreStatus = "shown";
+            // This shows the quiz question div and sets its data set to shown
+            quizQuestion.dataset.state = "hidden";
+            quizQuestion.setAttribute("class", "hidden");
+            quizAnswers.innerHTML = "";
+        }
+    else {
+        questionText.textContent = "";
+        questionText.textContent = questions[questionNumber];
+        shuffle(allAnswers[questionNumber]);
+        quizAnswers.innerHTML = "";
+        for (var i = 0; i < allAnswers[questionNumber].length; i++) {
+            var randAnswer = allAnswers[questionNumber][i];
+            var li = document.createElement("li");
+            var button = document.createElement("button");
+            button.textContent = randAnswer;
+            li.appendChild(button);
+            quizAnswers.appendChild(li);
+        }
+    }
 }
 
 // The following shuffle function was borrowed from the Fisher-Yates Shuffle, found on stackerflow at the following url: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
