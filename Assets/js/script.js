@@ -1,15 +1,3 @@
-// -- It will need to open with header text 'Coding Quiz Challenge' and p text describing the challenge, a start button, visible timer in the top-right, and view highscores in the top left -->
-
-// <!-- It will need an event listener to look for a click on the start button element. That event listener will need to hide all of the starter text and start button and then display -question text and -4 buttons with answer choices in a list -->
-
-// <!-- When any answer choice is clicked it will need to replace the question text and replace all of the text for answer choices. When an incorrect choice is clicked, it will need to subtract 10 seconds from the timer. If the correct answer is chosen, the following question should display the text "correct" below the answer choices, otherwise it should display "wrong"-->
-
-// <!-- When the last question is answered OR the timer gets to 0, it will need to hide all question text and answer choices. It will need to display 'Quiz Complete'. It will need to display the score inside of the text "Your final score is ". It will need to prompt the user to complete a form with their initials. It will need a button to submit the form -->
-
-// <!-- When the user submits the form, it will need to add the initials and the high score into a new  variable. This new variable should get added into a separate variable that contains all high scores. The all high scores variable will need to be stringified and saved to local storage, and the application should pull allhighscores from local storage to display to a list of high scores. -->
-
-// <!-- There needs to be a clear high scores button that clears the local storage. There needs to be a play again button that returns to the quiz start page
-
 // Variables
 
 // Variables for sections of the document that need to be modified by JS
@@ -47,7 +35,6 @@ var questionNumber = 0;
 var timeRemaining = 60;
 // finalScore stores the score at the end of the quiz for the user to enter into the high score board
 var finalScore = 0;
-// This looks for a click inside the quiz-intro div. If it was a button, it hides that div. It then calls the function that populates the quiz with a question and answers.
 var highScores = [];
 var timerInterval;
 
@@ -98,7 +85,7 @@ function startQuiz() {
     }
 };
 
-// This function should pull question text from the first object in the array. It should also pull answer choices from questionOneAnswers and populate each list item in a random order without repeating any choices.
+// This function should pull question text from the first object in the array. It should also pull answer choices from the nested array for the first question and populate each list item in a random order without repeating any choices.
 function populateQuiz() {
     questionText.textContent = questions[questionNumber];
     shuffle(allAnswers[questionNumber]);
@@ -139,7 +126,7 @@ function answerChosen(event) {
     }
 };
 
-// This function should clear the question text and insert text for the next question. It should shuffle the answers for question 2, clear the current answer choices, and then create new list items and buttons for the new answer choice.
+// This function should clear the question text and insert text for the next question. It should shuffle the answers for the current question, clear the current answer choices, and then create new list items and buttons for the new answer choice. It also checks to see if the quiz should be ended and does so if appropriate.
 function continueQuiz() {
     questionNumber++;
     // This checks for the user answering the last question in the quiz, hides the quiz if it was the last question, and shows the enter high score div
