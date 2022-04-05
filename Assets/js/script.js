@@ -18,6 +18,7 @@ var quizQuestion = document.getElementById("quiz-question");
 var questionText = document.getElementById("question-text");
 var quizAnswers = document.getElementById("quiz-answers");
 var enterScore = document.getElementById("enter-score");
+var yourFinalScore = document.getElementById("your-final-score")
 var scoreDisplay = document.getElementById("score-display");
 // questions contains the text of the question asked of the user in order of question number
 var questions = ["I'm question 1", "I'm question 2", "I'm question 3", "I'm question 4", "I'm question 5"];
@@ -34,10 +35,35 @@ allAnswers[4] = new Array ("I'm really the correct answer", "I'm really the wron
 var questionNumber = 0;
 var timeRemaining = 75;
 var finalScore = 0;
-
-
-timeDisplay.textContent = "Time Remaining: " + timeRemaining;
 // This looks for a click inside the quiz-intro div. If it was a button, it hides that div. It then calls the function that populates the quiz with a question and answers.
+var timerInterval;
+
+function countDown() {
+    if (timeRemaining > 1) {
+        timeDisplay.textContent = "Time Remaining: " + timeRemaining + " seconds";
+        timeRemaining--;
+    }
+    else if (timeRemaining === 1) {
+        timeDisplay.textContent = "Time Remaining: " + timeRemaining + " second";
+        timeRemaining--;
+    }
+    else {
+        timeDisplay.textContent = "";
+        var enterScoreStatus = enterScore.dataset.state;
+        enterScore.setAttribute("class","shown");
+        enterScoreStatus = "shown";
+        quizQuestion.dataset.state = "hidden";
+        quizQuestion.setAttribute("class", "hidden");
+        quizAnswers.innerHTML = "";
+        storeTime();
+        showFinalScore();
+        stopCountDown();
+    }
+}
+
+function stopCountDown() {
+    clearInterval(timerInterval);
+}
 
 function startQuiz(event) {
     var element = event.target;
@@ -54,7 +80,7 @@ function startQuiz(event) {
             quizQuestion.dataset.state = "shown";
             quizQuestion.setAttribute("class", "shown");
             populateQuiz();
-            countDown();
+            timerInterval = setInterval(countDown, 1000);
         }
     }
 };
@@ -74,27 +100,9 @@ function populateQuiz() {
     }
 }
 
-function countDown() {
-    var timeInterval = setInterval(function () {
-        if (timeRemaining > 1) {
-            timeDisplay.textContent = "Time Remaining: " + timeRemaining; + " seconds";
-            timeRemaining--;
-        }
-        else if (timeRemaining === 1) {
-            timeDisplay.textContent = "Time Remaining: " + timeRemaining; + " second";
-        }
-        else {
-            storeTime()
-            timeDisplay.textContent = "";
-            clearInterval(timeInterval);
-        }
-    } , 1000);
-}
-
 // stores the timeRemaining at end of quiz and then resets it to a starting time of 75 seconds
 function storeTime() {
     finalScore=timeRemaining;
-    timeRemaining=75;
 }
 
 function answerChosen(event) {
@@ -106,7 +114,7 @@ function answerChosen(event) {
         }
         else {
             timeRemaining = timeRemaining-10;
-            timeDisplay.textContent = "Time Remaining: " + timeRemaining;
+            timeDisplay.textContent = "Time Remaining " + timeRemaining + " seconds";
             continueQuiz();
         }
     }
@@ -124,6 +132,9 @@ function continueQuiz() {
             quizQuestion.setAttribute("class", "hidden");
             quizAnswers.innerHTML = "";
             storeTime();
+            timeDisplay.textContent= "";
+            stopCountDown();
+            showFinalScore();
         }
         // This generates the next question and set of answer choices
     else {
@@ -156,6 +167,10 @@ function shuffle(answers) {
         
     }
     return answers;
+}
+
+function showFinalScore() {
+    yourFinalScore.innerText = "Your final score is " + finalScore;
 }
 
 // Event listeners
