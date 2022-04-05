@@ -121,7 +121,6 @@ function storeTime() {
 function answerChosen(event) {
     var element = event.target;
     var answertext = element.textContent;
-    rightWrongDisplay.setAttribute("class","shown");
     if (element.matches("button")) {
         rightWrongDisplay.setAttribute("class","shown");
         if (answertext === allCorrectAnswer[questionNumber]) {
@@ -130,6 +129,7 @@ function answerChosen(event) {
             continueQuiz();
         }
         else {
+            rightWrongDisplay.setAttribute("class","shown");
             timeRemaining = timeRemaining-10;
             timeDisplay.textContent = "Time Remaining " + timeRemaining + " seconds";
             showWrong();
