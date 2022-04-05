@@ -11,6 +11,7 @@
 // <!-- There needs to be a clear high scores button that clears the local storage. There needs to be a play again button that returns to the quiz start page
 
 // Variables
+
 // Variables for sections of the document that need to be modified by JS
 var timeDisplay = document.getElementById("viewtimer");
 var quizIntro = document.getElementById("quiz-intro");
@@ -18,8 +19,13 @@ var quizQuestion = document.getElementById("quiz-question");
 var questionText = document.getElementById("question-text");
 var quizAnswers = document.getElementById("quiz-answers");
 var enterScore = document.getElementById("enter-score");
+var submitButton = document.getElementById("submit");
+var initials = document.getElementById("initials");
 var yourFinalScore = document.getElementById("your-final-score")
 var scoreDisplay = document.getElementById("score-display");
+var scoreList = document.getElementById("score-list");
+var playAgain = document.getElementById("play-again");
+var clearScoresButton = document.getElementById("clear-scores-button");
 // questions contains the text of the question asked of the user in order of question number
 var questions = ["I'm question 1", "I'm question 2", "I'm question 3", "I'm question 4", "I'm question 5"];
 // allCorrectAnswer contains the correct answers in order of question number
@@ -34,8 +40,11 @@ allAnswers[4] = new Array ("I'm really the correct answer", "I'm really the wron
 // questionNumber tracks which question the user is on. 
 var questionNumber = 0;
 var timeRemaining = 75;
+// finalScore stores the score at the end of the quiz for the user to enter into the high score board
 var finalScore = 0;
 // This looks for a click inside the quiz-intro div. If it was a button, it hides that div. It then calls the function that populates the quiz with a question and answers.
+var highScores = [];
+var storedHighScores = [];
 var timerInterval;
 
 function countDown() {
@@ -173,9 +182,59 @@ function showFinalScore() {
     yourFinalScore.innerText = "Your final score is " + finalScore;
 }
 
+function saveScore(event) {
+    event.preventDefault();
+
+    if (initials === "") {
+        return
+    }
+
+    initials = initials.value.trim();
+    var scoreToSave = initials + finalScore;
+    highScores.push(scoreToSave);
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+    initials.value = "";
+    displayHighScores();
+}
+
+function displayHighScores () {
+    enterScore.setAttribute("class", "hidden");
+    scoreDisplay.setAttribute("class", "shown");
+    for (var i = 0; i < highScores.length; i++) {
+        var li = document.createElement("li");
+        storedHighScores = localStorage.getItem("highScores")
+        li.innerText = highScores[i];
+        scoreList.appendChild(li);
+    }
+}
+
+function init() {
+    storedHighScores = JSON.parse(localStorage.getItem("highScores"));
+
+    if (storedHighScores !== null) {
+        highScores = storedHighScores;
+        console.log(highScores);
+    }
+}
+
+function restartGame() {
+    scoreDisplay.setAttribute("class", "hidden");
+    quizIntro.setAttribute("class", "shown");
+    timeRemaining = 75;
+}
+
+function clearScores () {
+    highScores = [];
+    localStorage.setItem("highScores", highScores);
+    scoreList.innerHTML = "";
+}
+
+init();
+
 // Event listeners
 
 quizIntro.addEventListener("click", startQuiz);
 quizQuestion.addEventListener("click", answerChosen);
-
-// reminder how to use localStorage    localStorage.setItem("finalScore", timeRemaining);
+submitButton.addEventListener("click", saveScore);
+playAgain.addEventListener("click", restartGame);
+clearScoresButton.addEventListener("click", clearScores);

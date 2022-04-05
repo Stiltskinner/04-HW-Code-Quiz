@@ -57,18 +57,16 @@
                 <br><br>
                 <p id="your-final-score"></p>
                 <br><br>
-                <p>Enter initials: <input id="intials"></input></form><button>Submit</button></p>
+                <form id="enter-score-form"><p>Enter initials: <input id="initials"></input><button id="submit">Submit</button></p></form>
             </div>
             <!-- The following div displays a list of current high scores and has buttons to Play Again or Clear High scores -->
             <div id="score-display" class="hidden" data-state="hidden">
                 <h2>High Scores</h2>
                 <br><br>
-                <ol class="high-scores">
-                    <li class="high-scores">Placeholder 50</li>
-                    <li class="high-scores">Placeholder 40</li>
+                <ol id="score-list" class="high-scores">
                 </ol>
                 <br>
-                <span><button>Play Again</button><button>Clear High Scores</button></span>
+                <span><button id="play-again">Play Again</button><button id="clear-scores-button">Clear High Scores</button></span>
             </div>
         </section>
         <br><br>
