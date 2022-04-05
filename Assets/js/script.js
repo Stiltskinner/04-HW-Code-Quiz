@@ -238,6 +238,7 @@ function init() {
 function restartGame() {
     event.preventDefault();
     scoreDisplay.setAttribute("class", "hidden");
+    rightWrongDisplay.setAttribute("class","hidden");
     quizIntro.setAttribute("class", "shown");
     quizIntro.dataset.state = "shown";
     timeRemaining = 60;
