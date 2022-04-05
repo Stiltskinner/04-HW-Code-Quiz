@@ -67,8 +67,8 @@ function stopCountDown() {
     timeDisplay.textContent= "";
 }
 
-function startQuiz() {
-
+function startQuiz(event) {
+        event.preventDefault();
         var introState = quizIntro.getAttribute("data-state");
 
         if (introState === "shown") {
@@ -106,6 +106,7 @@ function storeTime() {
 }
 
 function answerChosen(event) {
+    event.preventDefault();
     var element = event.target;
     var answertext = element.textContent;
     if (element.matches("button")) {
@@ -211,6 +212,7 @@ function saveScore(event) {
 }
 
 function displayHighScores () {
+    event.preventDefault();
     quizIntro.setAttribute("class", "hidden");
     quizQuestion.setAttribute("class", "hidden");
     enterScore.setAttribute("class", "hidden");
@@ -234,6 +236,7 @@ function init() {
 }
 
 function restartGame() {
+    event.preventDefault();
     scoreDisplay.setAttribute("class", "hidden");
     quizIntro.setAttribute("class", "shown");
     quizIntro.dataset.state = "shown";
@@ -242,6 +245,7 @@ function restartGame() {
 }
 
 function clearScores () {
+    event.preventDefault();
     highScores = [];
     localStorage.removeItem("highScores");
     scoreList.innerHTML = "";
