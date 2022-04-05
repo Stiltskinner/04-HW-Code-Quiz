@@ -14,7 +14,9 @@
 
 // Variables for sections of the document that need to be modified by JS
 var timeDisplay = document.getElementById("viewtimer");
+var viewScore = document.getElementById("viewscore");
 var quizIntro = document.getElementById("quiz-intro");
+var startButton = document.getElementById("start-button");
 var quizQuestion = document.getElementById("quiz-question");
 var questionText = document.getElementById("question-text");
 var quizAnswers = document.getElementById("quiz-answers");
@@ -26,25 +28,27 @@ var scoreDisplay = document.getElementById("score-display");
 var scoreList = document.getElementById("score-list");
 var playAgain = document.getElementById("play-again");
 var clearScoresButton = document.getElementById("clear-scores-button");
+var rightWrongDisplay = document.getElementById("right-wrong");
+var correctAlert = document.getElementById("Correct");
+var incorrectAlert = document.getElementById("Incorrect");
 // questions contains the text of the question asked of the user in order of question number
-var questions = ["I'm question 1", "I'm question 2", "I'm question 3", "I'm question 4", "I'm question 5"];
+var questions = ["What is Earth's Largest Continent?", "What is the smallest country in the world?", "Which country has the most natural lakes?", "What is the capital of Denmark?", "In which U.S. State would you find Big Bend National Park?"];
 // allCorrectAnswer contains the correct answers in order of question number
-var allCorrectAnswer = ["I'm the correct answer","I'm really the correct answer", "I'm really the correct answer", "I'm really the correct answer", "I'm really the correct answer"];
+var allCorrectAnswer = ["Asia","Vatican City", "Canada", "Copenhagen", "Texas"];
 // allAnswers is an array of arrays, and each nested array contains the answer choices for one question. They are in order of question number.
 var allAnswers = new Array ( );
-allAnswers[0] = new Array ("I'm the correct answer", "I'm the wrong answer1", "I'm the wrong answer2", "I'm the wrong answer3");
-allAnswers[1] = new Array ("I'm really the correct answer", "I'm really the wrong answer1", "I'm really the wrong answer2", "I'm really the wrong answer3");
-allAnswers[2] = new Array ("I'm really the correct answer", "I'm really the wrong answer1", "I'm really the wrong answer2", "I'm really the wrong answer3");
-allAnswers[3] = new Array ("I'm really the correct answer", "I'm really the wrong answer1", "I'm really the wrong answer2", "I'm really the wrong answer3");
-allAnswers[4] = new Array ("I'm really the correct answer", "I'm really the wrong answer1", "I'm really the wrong answer2", "I'm really the wrong answer3");
+allAnswers[0] = new Array ("Asia", "Africa", "North America", "Australia");
+allAnswers[1] = new Array ("Vatican City", "Luxembourg", "Lesotho", "Denmark");
+allAnswers[2] = new Array ("Canada", "Nigeria", "China", "North America");
+allAnswers[3] = new Array ("Copenhagen", "The Hague", "Budapest", "Reykjavik");
+allAnswers[4] = new Array ("Texas", "Utah", "Nevada", "California");
 // questionNumber tracks which question the user is on. 
 var questionNumber = 0;
-var timeRemaining = 75;
+var timeRemaining = 60;
 // finalScore stores the score at the end of the quiz for the user to enter into the high score board
 var finalScore = 0;
 // This looks for a click inside the quiz-intro div. If it was a button, it hides that div. It then calls the function that populates the quiz with a question and answers.
 var highScores = [];
-var storedHighScores = [];
 var timerInterval;
 
 function countDown() {
@@ -63,6 +67,7 @@ function countDown() {
         enterScoreStatus = "shown";
         quizQuestion.dataset.state = "hidden";
         quizQuestion.setAttribute("class", "hidden");
+        rightWrongDisplay.setAttribute("class","hidden");
         quizAnswers.innerHTML = "";
         storeTime();
         showFinalScore();
@@ -72,12 +77,11 @@ function countDown() {
 
 function stopCountDown() {
     clearInterval(timerInterval);
+    timeDisplay.textContent= "";
 }
 
-function startQuiz(event) {
-    var element = event.target;
+function startQuiz() {
 
-    if (element.matches("button")) {
         var introState = quizIntro.getAttribute("data-state");
 
         if (introState === "shown") {
@@ -90,7 +94,7 @@ function startQuiz(event) {
             quizQuestion.setAttribute("class", "shown");
             populateQuiz();
             timerInterval = setInterval(countDown, 1000);
-        }
+        
     }
 };
 
@@ -109,7 +113,7 @@ function populateQuiz() {
     }
 }
 
-// stores the timeRemaining at end of quiz and then resets it to a starting time of 75 seconds
+// stores the timeRemaining at end of quiz
 function storeTime() {
     finalScore=timeRemaining;
 }
@@ -117,13 +121,19 @@ function storeTime() {
 function answerChosen(event) {
     var element = event.target;
     var answertext = element.textContent;
+    rightWrongDisplay.setAttribute("class","shown");
     if (element.matches("button")) {
+        rightWrongDisplay.setAttribute("class","shown");
         if (answertext === allCorrectAnswer[questionNumber]) {
+            showRight();
+            hideWrong();
             continueQuiz();
         }
         else {
             timeRemaining = timeRemaining-10;
             timeDisplay.textContent = "Time Remaining " + timeRemaining + " seconds";
+            showWrong();
+            hideRight();
             continueQuiz();
         }
     }
@@ -139,6 +149,7 @@ function continueQuiz() {
             enterScoreStatus = "shown";
             quizQuestion.dataset.state = "hidden";
             quizQuestion.setAttribute("class", "hidden");
+            rightWrongDisplay.setAttribute("class","hidden");
             quizAnswers.innerHTML = "";
             storeTime();
             timeDisplay.textContent= "";
@@ -160,6 +171,22 @@ function continueQuiz() {
             quizAnswers.appendChild(li);
         }
     }
+}
+
+function hideRight() {
+    correctAlert.setAttribute("class", "hidden")
+}
+
+function hideWrong() {
+    incorrectAlert.setAttribute("class", "hidden")
+}
+
+function showRight() {
+    correctAlert.setAttribute("class", "shown")
+}
+
+function showWrong() {
+    incorrectAlert.setAttribute("class", "shown")
 }
 
 // The following shuffle function was borrowed from the Fisher-Yates Shuffle, found on stackerflow at the following url: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
@@ -185,12 +212,11 @@ function showFinalScore() {
 function saveScore(event) {
     event.preventDefault();
 
-    if (initials === "") {
+    if (initials.value === "") {
         return
     }
 
-    initials = initials.value.trim();
-    var scoreToSave = initials + finalScore;
+    var scoreToSave = initials.value + " ...................... " + finalScore;
     highScores.push(scoreToSave);
     localStorage.setItem("highScores", JSON.stringify(highScores));
     initials.value = "";
@@ -198,34 +224,39 @@ function saveScore(event) {
 }
 
 function displayHighScores () {
+    quizIntro.setAttribute("class", "hidden");
+    quizQuestion.setAttribute("class", "hidden");
     enterScore.setAttribute("class", "hidden");
     scoreDisplay.setAttribute("class", "shown");
+    scoreList.innerHTML = "";
+    stopCountDown();
     for (var i = 0; i < highScores.length; i++) {
         var li = document.createElement("li");
-        storedHighScores = localStorage.getItem("highScores")
         li.innerText = highScores[i];
         scoreList.appendChild(li);
     }
 }
 
 function init() {
-    storedHighScores = JSON.parse(localStorage.getItem("highScores"));
-
+    var storedHighScores = (localStorage.getItem("highScores"));
     if (storedHighScores !== null) {
+        storedHighScores = JSON.parse(localStorage.getItem("highScores"));
+        highScores = [];
         highScores = storedHighScores;
-        console.log(highScores);
     }
 }
 
 function restartGame() {
     scoreDisplay.setAttribute("class", "hidden");
     quizIntro.setAttribute("class", "shown");
-    timeRemaining = 75;
+    quizIntro.dataset.state = "shown";
+    timeRemaining = 60;
+    questionNumber = 0;
 }
 
 function clearScores () {
     highScores = [];
-    localStorage.setItem("highScores", highScores);
+    localStorage.removeItem("highScores");
     scoreList.innerHTML = "";
 }
 
@@ -233,8 +264,9 @@ init();
 
 // Event listeners
 
-quizIntro.addEventListener("click", startQuiz);
+startButton.addEventListener("click", startQuiz);
 quizQuestion.addEventListener("click", answerChosen);
 submitButton.addEventListener("click", saveScore);
 playAgain.addEventListener("click", restartGame);
 clearScoresButton.addEventListener("click", clearScores);
+viewScore.addEventListener("click", displayHighScores);

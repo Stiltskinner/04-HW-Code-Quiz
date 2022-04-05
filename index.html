@@ -39,7 +39,7 @@
                     possible. 10 seconds will be deducted from the timer when you answer incorrectly. Your high score
                     will be the time you have left when finished. Click 'Start Quiz' to start the quiz.</p>
                     <br>
-                <button>Start Quiz</button>
+                <button id="start-button">Start Quiz</button>
             </div>
             <!-- The following div contains questions and answer choices -->
             <div id="quiz-question" class="hidden" data-state="hidden">
@@ -57,7 +57,7 @@
                 <br><br>
                 <p id="your-final-score"></p>
                 <br><br>
-                <form id="enter-score-form"><p>Enter initials: <input id="initials"></input><button id="submit">Submit</button></p></form>
+                <form id="enter-score-form"><p>Enter initials: <input type="text" id="initials"></input><button id="submit">Submit</button></p></form>
             </div>
             <!-- The following div displays a list of current high scores and has buttons to Play Again or Clear High scores -->
             <div id="score-display" class="hidden" data-state="hidden">
@@ -72,7 +72,8 @@
         <br><br>
         <!-- The following div displays Correct! or Wrong! based on the answer selected on the previous question. If the previous page was not a quiz question, it should be hidden -->
         <div id="right-wrong" class="hidden" data-state="hidden">
-            <p>Placeholder Right/Wrong</p>
+            <p id="Correct" class="hidden">Correct</p>
+            <p id="Incorrect" class="hidden">Wrong</p>
         </div>
     </main>
     <script src="./assets/js/script.js"></script>
