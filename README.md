@@ -1,6 +1,6 @@
 # 04-HW-Code-Quiz
 A quiz on geography with a timer and a high score feature
-##Borrowed Code:
+## Borrowed Code:
 I used a shuffle function called the Fisher-Yates Shuffle, found on stackerflow at the following url: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 
 This quiz works by starting with an html file that has divs containing each page that I want to be able to display, as well as a header containing the view high scores button (always visible) and the timer (starts hidden, displays while the quiz is running)
@@ -17,7 +17,7 @@ Countdown displays to the user how much time is remaining in the top-right, and 
 
 populateQuiz is a function that is fired by startQuiz, and it pulls the appropriate question from the array of questions based on the question number, which starts at 0. It also shuffles the answer choices for the first question and pulls all of the answer choices from the nested array of choices and creates list elements in the html that are also buttons containing the answer choice text. It appends these list items to the ul in the html.
 
-the answerChosen function fires when any answer is chosen, and it shows the div that contains text telling the user whether their choice was correct or incorrect. If their answer was correct, it shows the text telling the user they were right, otherwise it tells them the text that they were wrong. If they were wrong, it substracts 10 minutes from the timer and updates the timer display. In either case, it fires the continueQuiz function.
+the answerChosen function fires when any answer is chosen, and it shows the div that contains text telling the user whether their choice was correct or incorrect. If their answer was correct, it shows the text telling the user they were right, otherwise it tells them the text that they were wrong. If they were wrong, it subtracts 10 seconds from the timer and updates the timer display. In either case, it fires the continueQuiz function.
 
 conitinueQuiz adds 1 to the quizNumber, then checks to see if the quiz is over first. If it is, it hides the quiz and displays the screen to enter initials to the high score board. It fires the storeTime function, hides the timer, stops the countdown, and fires the function that shows the user their final score. If the quiz is not over, it replaces the question with the next one, shuffles the answer choices, clears the previous list items, then creates new list items from the shuffled answer choices.
 
